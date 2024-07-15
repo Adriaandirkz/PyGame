@@ -9,7 +9,7 @@ class Bullet:
         self.y = y
         self.color = (0, 255, 0)  # Green color for the bullet
         self.radius = 5
-        self.speed = 5
+        self.speed = 10
         self.shockwave = None
 
     def update(self):
@@ -26,7 +26,7 @@ class Bullet:
 
     def collides_with(self, droid):
         distance = ((self.x - droid.x) ** 2 + (self.y - droid.y) ** 2) ** 0.5
-        return distance < self.radius + droid.width / 2
+        return distance < self.radius + droid.width +5 / 2
 
     def handle_collision(self, droid):
         droid.explode()

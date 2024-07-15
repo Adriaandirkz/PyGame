@@ -56,3 +56,6 @@ class Droid:
             if particle.radius <= 0:  # Remove particles that are too small
                 self.explosion_particles.remove(particle)
 
+    def collides_with(self, turret):
+        distance = ((self.x - turret.x) ** 2 + (self.y - turret.y) ** 2) ** 0.5
+        return distance < self.width + turret.width +3 / 2

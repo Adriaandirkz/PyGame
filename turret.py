@@ -2,6 +2,8 @@
 
 import pygame
 from bullet import Bullet
+from shockwave import Shockwave
+
 
 class Turret:
     def __init__(self, x, y):
@@ -46,3 +48,9 @@ class Turret:
                         droid.explode()
                         self.bullets.remove(bullet)
                         break
+
+    def explode(self):
+        print("Collision")
+        self.shockwave = Shockwave(self.x,self.y,full=True)
+        self.shockwave.draw()
+

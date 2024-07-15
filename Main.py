@@ -73,6 +73,8 @@ while running:
     # Update and draw each droid
     for droid in droids:
         droid.move_towards(turret.x + turret.width // 2, turret.y + turret.height // 2)
+        if droid.collides_with(turret):
+            turret.explode()
         droid.draw(screen)
         if droid.shockwave:
             shockwaves.append(Shockwave(droid.x,droid.y))
