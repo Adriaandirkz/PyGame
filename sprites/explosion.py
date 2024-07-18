@@ -1,10 +1,8 @@
-# explosion_particle.py
 import math
-
 import pygame
 import random
 
-class ExplosionParticle:
+class Explosion:
     def __init__(self, x, y):
         self.x = x
         self.y = y

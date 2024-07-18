@@ -1,25 +1,33 @@
 # turret.py
 
 import pygame
-from bullet import Bullet
-from shockwave import Shockwave
+from sprites.bullet import Bullet
+from sprites.sprite import Sprite
+from sprites.shockwave import Shockwave
 
 
-class Turret:
+class Turret(Sprite):
     def __init__(self, x, y):
+        self.turrets.append(self)
+        self.active = True
         self.x = x
         self.y = y
         self.color = (255, 0, 0)  # Red color for the turret
         self.width = 20
         self.height = 20
         self.dragging = False
-        self.bullets = []
         self.last_shot_time = pygame.time.get_ticks()
+
+    def update(self):
+        self.shoot()
+
 
     def draw(self, screen):
         pygame.draw.rect(screen, self.color, (self.x, self.y, self.width, self.height))
         for bullet in self.bullets:
             bullet.draw(screen)
+
+
 
     def is_clicked(self, mouse_pos):
         mx, my = mouse_pos
@@ -30,27 +38,17 @@ class Turret:
         self.x = mx - self.width // 2
         self.y = my - self.height // 2
 
+
     def shoot(self):
         current_time = pygame.time.get_ticks()
-        if current_time - self.last_shot_time >= 2000:  # 2 seconds
-            bullet = Bullet(self.x + self.width // 2, self.y)
-            self.bullets.append(bullet)
+        if current_time - self.last_shot_time >= 2000 and self.active:  # 2 seconds
+            Bullet(self.x + self.width // 2, self.y)
             self.last_shot_time = current_time
 
-    def update_bullets(self, droids):
-        for bullet in self.bullets[:]:
-            bullet.update()
-            if bullet.y < 0:  # Remove the bullet if it goes off-screen
-                self.bullets.remove(bullet)
-            else:
-                for droid in droids:
-                    if bullet.collides_with(droid):
-                        droid.explode()
-                        self.bullets.remove(bullet)
-                        break
 
     def explode(self):
+        self.active = False
+        self.shockwaves.append(Shockwave(self.x,self.y,full=True))
         print("Collision")
-        self.shockwave = Shockwave(self.x,self.y,full=True)
-        self.shockwave.draw()
+
 
